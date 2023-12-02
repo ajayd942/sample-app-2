@@ -1,0 +1,24 @@
+logging:
+  level: DEBUG
+  loggers:
+    com.ajay.sampleApp: INFO
+    org.hibernate.SQL: DEBUG
+database:
+  # the name of your JDBC driver
+  driverClass: org.postgresql.Driver
+
+  # the username
+  user: ajay
+
+  # the password
+  password: 66132480
+
+  properties:
+    charSet: UTF-8
+    hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
+    hibernate.show_sql: true
+
+  # the JDBC URL
+  url: jdbc:postgresql://localhost:5432/sample-app-2
+
+redisHost: redis://127.0.0.1:6379

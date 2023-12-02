@@ -1,0 +1,10 @@
+/Users/ajay/workspace/dropwizard/sample-app-2/src/main/java/com/ajay/sampleApp/redis/UserRedisService.java
+/Users/ajay/workspace/dropwizard/sample-app-2/src/main/java/com/ajay/sampleApp/SampleAppApplication.java
+/Users/ajay/workspace/dropwizard/sample-app-2/src/main/java/com/ajay/sampleApp/db/entities/UserEntity.java
+/Users/ajay/workspace/dropwizard/sample-app-2/src/main/java/com/ajay/sampleApp/resources/UserResource.java
+/Users/ajay/workspace/dropwizard/sample-app-2/src/main/java/com/ajay/sampleApp/data/User.java
+/Users/ajay/workspace/dropwizard/sample-app-2/src/main/java/com/ajay/sampleApp/SampleAppConfiguration.java
+/Users/ajay/workspace/dropwizard/sample-app-2/src/main/java/com/ajay/sampleApp/SampleAppModule.java
+/Users/ajay/workspace/dropwizard/sample-app-2/src/main/java/com/ajay/sampleApp/db/UserDao.java
+/Users/ajay/workspace/dropwizard/sample-app-2/src/main/java/com/ajay/sampleApp/data/UpdateUserRequest.java
+/Users/ajay/workspace/dropwizard/sample-app-2/src/main/java/com/ajay/sampleApp/data/CreateUserRequest.java

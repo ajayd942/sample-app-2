@@ -1,0 +1,16 @@
+com/ajay/sampleApp/db/entities/UserEntity$UserEntityBuilder.class
+com/ajay/sampleApp/SampleAppModule.class
+com/ajay/sampleApp/resources/UserResource.class
+com/ajay/sampleApp/SampleAppApplication$2.class
+com/ajay/sampleApp/SampleAppApplication.class
+com/ajay/sampleApp/db/entities/UserEntity.class
+com/ajay/sampleApp/data/User$UserBuilder.class
+com/ajay/sampleApp/data/User.class
+com/ajay/sampleApp/data/UpdateUserRequest.class
+com/ajay/sampleApp/redis/UserRedisService.class
+com/ajay/sampleApp/SampleAppApplication$1.class
+com/ajay/sampleApp/db/UserDao.class
+com/ajay/sampleApp/SampleAppConfiguration.class
+com/ajay/sampleApp/data/CreateUserRequest.class
+com/ajay/sampleApp/data/CreateUserRequest$CreateUserRequestBuilder.class
+com/ajay/sampleApp/data/UpdateUserRequest$UpdateUserRequestBuilder.class
