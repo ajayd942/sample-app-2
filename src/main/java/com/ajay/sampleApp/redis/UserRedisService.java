@@ -4,6 +4,8 @@ import com.ajay.sampleApp.db.entities.UserEntity;
 import com.google.common.collect.ImmutableMap;
 import com.google.inject.Inject;
 import redis.clients.jedis.Jedis;
+import redis.clients.jedis.Pipeline;
+import redis.clients.jedis.Response;
 
 import java.math.BigInteger;
 import java.text.ParseException;
@@ -40,19 +42,21 @@ public class UserRedisService {
     public void setUserInRedis( UserEntity user){
         String userId = String.valueOf(user.getId());
         SimpleDateFormat formatter = new SimpleDateFormat("dd-mm-yyyy", Locale.ENGLISH);
+        Pipeline pipeline = jedisClient.pipelined();
         if(Objects.nonNull(user.getDob())) {
-            jedisClient.hset("USER:EMAIL", ImmutableMap.of(userId, user.getEmail()));
+            pipeline.hset("USER:EMAIL", ImmutableMap.of(userId, user.getEmail()));
         }
         if(Objects.nonNull(user.getDob())) {
-            jedisClient.hset("USER:DOB", ImmutableMap.of(userId, formatter.format(user.getDob())));
+            pipeline.hset("USER:DOB", ImmutableMap.of(userId, formatter.format(user.getDob())));
         }
-        jedisClient.hset("USER:FULL_NAME", ImmutableMap.of(userId, user.getFullName()));
+        pipeline.hset("USER:FULL_NAME", ImmutableMap.of(userId, user.getFullName()));
         if(Objects.nonNull(user.getPhone())) {
-            jedisClient.hset("USER:PHONE", ImmutableMap.of(userId, user.getPhone()));
+            pipeline.hset("USER:PHONE", ImmutableMap.of(userId, user.getPhone()));
         }
         if(Objects.nonNull(user.getAdditionalInfo())) {
-            jedisClient.hset("USER:ADDITIONAL_INFO", ImmutableMap.of(userId, user.getAdditionalInfo()));
+            pipeline.hset("USER:ADDITIONAL_INFO", ImmutableMap.of(userId, user.getAdditionalInfo()));
         }
+        pipeline.sync();
     }
 
     public UserEntity getUserInRedis(String userId) throws ParseException {
@@ -61,26 +65,30 @@ public class UserRedisService {
         if(Objects.isNull(email)){
             return null;
         }
-        String dob = jedisClient.hget("USER:DOB", userId);
-        String fullName = jedisClient.hget("USER:FULL_NAME", userId);
-        String phone = jedisClient.hget("USER:PHONE", userId);
-        String additionalInfo = jedisClient.hget("USER:ADDITIONAL_INFO", userId);
+        Pipeline pipeline = jedisClient.pipelined();
+        Response<String> dobResponse = pipeline.hget("USER:DOB", userId);
+        Response<String> fullNameResponse = pipeline.hget("USER:FULL_NAME", userId);
+        Response<String> phoneResponse = pipeline.hget("USER:PHONE", userId);
+        Response<String> additionalInfoResponse = pipeline.hget("USER:ADDITIONAL_INFO", userId);
+        pipeline.sync();
         return UserEntity.builder()
                 .id(new BigInteger(userId))
-                .fullName(fullName)
+                .fullName(fullNameResponse.get())
                 .email(email)
-                .phone(phone)
-                .dob(formatter.parse(dob))
-                .additionalInfo(additionalInfo)
+                .phone(phoneResponse.get())
+                .dob(formatter.parse(dobResponse.get()))
+                .additionalInfo(additionalInfoResponse.get())
                 .build();
     }
 
     public void deleteUserInRedis(String userId){
-        jedisClient.hdel("USER:EMAIL", userId);
-        jedisClient.hdel("USER:DOB", userId);
-        jedisClient.hdel("USER:FULL_NAME", userId);
-        jedisClient.hdel("USER:PHONE", userId);
-        jedisClient.hdel("USER:ADDITIONAL_INFO", userId);
+        Pipeline pipeline = jedisClient.pipelined();
+        pipeline.hdel("USER:EMAIL", userId);
+        pipeline.hdel("USER:DOB", userId);
+        pipeline.hdel("USER:FULL_NAME", userId);
+        pipeline.hdel("USER:PHONE", userId);
+        pipeline.hdel("USER:ADDITIONAL_INFO", userId);
+        pipeline.sync();
     }
 
 //    public List<UserEntity> listAllUsersInRedis()  {
