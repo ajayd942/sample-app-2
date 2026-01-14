@@ -4,21 +4,20 @@ import com.ajay.sampleApp.db.entities.UserEntity;
 import com.ajay.sampleApp.resources.UserResource;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import io.dropwizard.Application;
+import io.dropwizard.core.Application;
+import io.dropwizard.configuration.EnvironmentVariableSubstitutor;
+import io.dropwizard.configuration.SubstitutingSourceProvider;
 import io.dropwizard.db.DataSourceFactory;
 import io.dropwizard.hibernate.HibernateBundle;
 import io.dropwizard.migrations.MigrationsBundle;
-import io.dropwizard.setup.Bootstrap;
-import io.dropwizard.setup.Environment;
-import liquibase.Liquibase;
-import liquibase.database.Database;
-import liquibase.database.DatabaseFactory;
-import liquibase.database.jvm.JdbcConnection;
-import liquibase.resource.ClassLoaderResourceAccessor;
+import io.dropwizard.core.setup.Bootstrap;
+import io.dropwizard.core.setup.Environment;
+import jakarta.servlet.DispatcherType;
+import jakarta.servlet.FilterRegistration;
+import org.eclipse.jetty.servlets.CrossOriginFilter;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.util.Arrays;
+import java.util.EnumSet;
 import java.util.List;
 
 public class SampleAppApplication extends Application<SampleAppConfiguration> {
@@ -46,7 +45,12 @@ public class SampleAppApplication extends Application<SampleAppConfiguration> {
 
     @Override
     public void initialize(final Bootstrap<SampleAppConfiguration> bootstrap) {
-        // TODO: application initialization
+        // Enable variable substitution with environment variables
+        bootstrap.setConfigurationSourceProvider(
+                new SubstitutingSourceProvider(bootstrap.getConfigurationSourceProvider(),
+                        new EnvironmentVariableSubstitutor(false))
+        );
+
         bootstrap.addBundle(new MigrationsBundle<SampleAppConfiguration>() {
             @Override
             public DataSourceFactory getDataSourceFactory(SampleAppConfiguration configuration) {
@@ -64,26 +68,18 @@ public class SampleAppApplication extends Application<SampleAppConfiguration> {
     @Override
     public void run(final SampleAppConfiguration configuration,
                     final Environment environment) {
-        // Initialize Liquibase and apply database changes
-        try {
-            Connection connection = DriverManager.getConnection(
-                    configuration.getDataSourceFactory().getUrl(),
-                    configuration.getDataSourceFactory().getUser(),
-                    configuration.getDataSourceFactory().getPassword());
+        // Configure CORS
+        final FilterRegistration.Dynamic cors =
+                environment.servlets().addFilter("CORS", CrossOriginFilter.class);
 
-            Database database = DatabaseFactory.getInstance()
-                    .findCorrectDatabaseImplementation(new JdbcConnection(connection));
+        // Configure CORS parameters
+        cors.setInitParameter(CrossOriginFilter.ALLOWED_ORIGINS_PARAM, "http://localhost:3000,https://ajaywedsvandana.uk");
+        cors.setInitParameter(CrossOriginFilter.ALLOWED_HEADERS_PARAM, "X-Requested-With,Content-Type,Accept,Origin,Authorization");
+        cors.setInitParameter(CrossOriginFilter.ALLOWED_METHODS_PARAM, "OPTIONS,GET,PUT,POST,DELETE,HEAD");
 
-            Liquibase liquibase = new Liquibase("db/migrations.xml",
-                    new ClassLoaderResourceAccessor(),
-                    database);
+        // Add URL mapping
+        cors.addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), true, "/*");
 
-            liquibase.update("");
-        } catch (Exception e) {
-            // Handle any exceptions during Liquibase initialization
-            e.printStackTrace();
-            // Consider proper error handling and logging
-        }
         Injector injector = Guice.createInjector(new SampleAppModule(configuration, hibernateBundle));
         registerResources(environment, injector);
     }

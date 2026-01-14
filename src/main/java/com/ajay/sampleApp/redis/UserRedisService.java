@@ -41,7 +41,7 @@ public class UserRedisService {
 
     public void setUserInRedis( UserEntity user){
         String userId = String.valueOf(user.getId());
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-mm-yyyy", Locale.ENGLISH);
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
         Pipeline pipeline = jedisClient.pipelined();
         if(Objects.nonNull(user.getDob())) {
             pipeline.hset("USER:EMAIL", ImmutableMap.of(userId, user.getEmail()));
@@ -61,7 +61,7 @@ public class UserRedisService {
 
     public UserEntity getUserInRedis(String userId) throws ParseException {
         String email = jedisClient.hget("USER:EMAIL", userId);
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-mm-yyyy", Locale.ENGLISH);
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
         if(Objects.isNull(email)){
             return null;
         }

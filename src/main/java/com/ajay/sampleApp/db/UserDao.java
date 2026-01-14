@@ -6,9 +6,9 @@ import com.google.inject.Inject;
 import io.dropwizard.hibernate.AbstractDAO;
 import org.hibernate.SessionFactory;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
 import java.math.BigInteger;
 import java.text.ParseException;
 import java.util.List;
@@ -40,7 +40,8 @@ public class UserDao extends AbstractDAO<UserEntity> {
                 return user;
             }
         } catch (ParseException e) {
-            throw new RuntimeException(e);
+            // Log the error and fallback to DB
+            e.printStackTrace();
         }
         user = get(id);
         if(Objects.nonNull(user)) {

@@ -2,8 +2,8 @@
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
     <changeSet id="1" author="ajaydube">
-        <createTable tableName="user">
-            <column name="id" type="bigserial" autoIncrement="true">
+        <createTable tableName="users">
+            <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="full_name" type="varchar(255)">
@@ -14,7 +14,7 @@
             </column>
             <column name="dob" type="date"/>
             <column name="phone" type="varchar(32)"/>
-            <column name="additional_info" type="json"/>
+            <column name="additional_info" type="jsonb"/>
         </createTable>
     </changeSet>
 </databaseChangeLog>

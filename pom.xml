@@ -16,9 +16,9 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <dropwizard.version>2.1.2</dropwizard.version>
-        <postgresql.version>42.5.0</postgresql.version>
-        <lombok.version>1.18.36</lombok.version>
+        <dropwizard.version>4.0.7</dropwizard.version>
+        <postgresql.version>42.7.5</postgresql.version>
+        <lombok.version>1.18.42</lombok.version>
         <mainClass>com.ajay.sampleApp.SampleAppApplication</mainClass>
     </properties>
 
@@ -79,29 +79,52 @@
         <dependency>
             <groupId>org.liquibase</groupId>
             <artifactId>liquibase-core</artifactId>
-            <version>4.23.2</version>
+            <version>4.27.0</version>
         </dependency>
 
         <!-- Liquibase PostgreSQL Extension -->
         <dependency>
             <groupId>org.liquibase.ext</groupId>
-            <artifactId>liquibase-hibernate5</artifactId>
-            <version>4.22.0</version>
+            <artifactId>liquibase-hibernate6</artifactId>
+            <version>4.27.0</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.hibernate.orm</groupId>
+                    <artifactId>hibernate-envers</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>io.hypersistence</groupId>
-            <artifactId>hypersistence-utils-hibernate-55</artifactId>
-            <version>3.6.1</version>
+            <artifactId>hypersistence-utils-hibernate-63</artifactId>
+            <version>3.7.3</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.hibernate.orm</groupId>
+                    <artifactId>hibernate-envers</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>redis.clients</groupId>
             <artifactId>jedis</artifactId>
-            <version>5.1.0</version>
+            <version>5.1.2</version>
         </dependency>
         <dependency>
             <groupId>com.google.inject</groupId>
             <artifactId>guice</artifactId>
-            <version>5.1.0</version>
+            <version>7.0.0</version>
+        </dependency>
+        <!-- Added spring-beans dependency to fix NoClassDefFoundError -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
+            <version>5.3.31</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>5.3.31</version>
         </dependency>
     </dependencies>
 
@@ -109,7 +132,7 @@
         <plugins>
             <plugin>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.3.0</version>
+                <version>3.6.0</version>
                 <configuration>
                     <createDependencyReducedPom>true</createDependencyReducedPom>
                     <transformers>
@@ -141,7 +164,7 @@
             </plugin>
             <plugin>
                 <artifactId>maven-jar-plugin</artifactId>
-                <version>3.2.2</version>
+                <version>3.4.1</version>
                 <configuration>
                     <archive>
                         <manifest>
@@ -153,26 +176,26 @@
             </plugin>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.12.1</version>
+                <version>3.13.0</version>
                 <configuration>
-                    <source>23</source>
-                    <target>23</target>
+                    <source>25</source>
+                    <target>25</target>
                     <annotationProcessorPaths>
                         <path>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
-                            <version>${lombok.version}</version> <!-- Use the version you're using -->
+                            <version>${lombok.version}</version>
                         </path>
                     </annotationProcessorPaths>
                 </configuration>
             </plugin>
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.22.2</version>
+                <version>3.2.5</version>
             </plugin>
             <plugin>
                 <artifactId>maven-source-plugin</artifactId>
-                <version>3.2.1</version>
+                <version>3.3.1</version>
                 <executions>
                     <execution>
                         <id>attach-sources</id>
@@ -184,7 +207,7 @@
             </plugin>
             <plugin>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.4.1</version>
+                <version>3.6.3</version>
                 <executions>
                     <execution>
                         <id>attach-javadocs</id>
@@ -201,7 +224,7 @@
         <plugins>
             <plugin>
                 <artifactId>maven-project-info-reports-plugin</artifactId>
-                <version>3.4.1</version>
+                <version>3.5.0</version>
                 <configuration>
                     <dependencyLocationsEnabled>false</dependencyLocationsEnabled>
                     <dependencyDetailsEnabled>false</dependencyDetailsEnabled>
@@ -209,7 +232,7 @@
             </plugin>
             <plugin>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.4.1</version>
+                <version>3.6.3</version>
             </plugin>
         </plugins>
     </reporting>
@@ -220,10 +243,6 @@
                 <jdk>[11,)</jdk>
             </activation>
             <properties>
-                <!--
-                Workaround for "javadoc: error - The code being documented uses modules but the packages
-                defined in https://docs.oracle.com/javase/8/docs/api/ are in the unnamed module."
-                -->
                 <maven.javadoc.skip>true</maven.javadoc.skip>
             </properties>
         </profile>

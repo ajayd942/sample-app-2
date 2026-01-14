@@ -9,10 +9,10 @@ import com.google.inject.Inject;
 import io.dropwizard.hibernate.UnitOfWork;
 import org.eclipse.jetty.http.HttpStatus;
 
-import javax.validation.Valid;
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import jakarta.validation.Valid;
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 import java.math.BigInteger;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -51,7 +51,7 @@ public class UserResource {
     @UnitOfWork
     public Response createUser(@Valid CreateUserRequest createUserRequest) {
         // Validate if dob is in date format
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-mm-yyyy", Locale.ENGLISH);
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
         Date dob = null;
         try {
             dob = Objects.nonNull(createUserRequest.getDob()) ? formatter.parse(createUserRequest.getDob()) : dob;
@@ -94,7 +94,7 @@ public class UserResource {
     @Path("/{UserId}")
     @UnitOfWork
     public Response updateUser(@PathParam("UserId") BigInteger UserId, @Valid UpdateUserRequest updateUserRequest) {
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-mm-yyyy", Locale.ENGLISH);
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
         Date dob = null;
         if(Objects.nonNull(updateUserRequest.getDob())) {
             try {
@@ -146,5 +146,3 @@ public class UserResource {
         return Response.ok().entity(String.format("User with ID: %s deleted", UserId)).build();
     }
 }
-
-//todo 1. DOB in responses are not in human readable format

@@ -1,14 +1,16 @@
 package com.ajay.sampleApp.db.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import io.hypersistence.utils.hibernate.type.json.JsonType;
 import lombok.*;
 import org.hibernate.annotations.Type;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.math.BigInteger;
 import java.util.Date;
 
 @Entity
-@Table(name="user", schema="public")
+@Table(name="users", schema="public")
 @NoArgsConstructor
 @RequiredArgsConstructor
 @AllArgsConstructor
@@ -18,8 +20,7 @@ import java.util.Date;
 public class UserEntity {
     @Id
     @Column(name="id", updatable=false)
-    @SequenceGenerator(name="user_id_seq", sequenceName="user_id_seq", allocationSize=1)
-    @GeneratedValue(strategy= GenerationType.SEQUENCE, generator="user_id_seq")
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private BigInteger id;
 
     @Column(name="full_name")
@@ -30,11 +31,13 @@ public class UserEntity {
     @NonNull
     private String email;
     @Column(name="dob")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private Date dob;
     @Column(name="phone")
     private String phone;
-    @Type(type = "json")
-    @Column(name = "additional_info", columnDefinition = "json")
+    
+    @Type(JsonType.class)
+    @Column(name = "additional_info", columnDefinition = "jsonb")
     private String additionalInfo;
 
 }
