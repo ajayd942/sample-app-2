@@ -6,15 +6,15 @@ const EventCard = ({ event, index }) => {
   const isLeft = index % 2 === 0;
 
   return (
-    <div className={`mb-8 flex justify-between items-center w-full ${isLeft ? 'flex-row-reverse' : ''}`}>
+    <div className={`mb-8 flex flex-col md:flex-row md:justify-between md:items-center w-full ${isLeft ? 'md:flex-row-reverse' : ''}`}>
       <div className="hidden md:block w-5/12"></div>
       
-      <div className="z-20 flex items-center order-1 bg-wedding-primary shadow-xl w-8 h-8 rounded-full">
+      <div className="z-20 flex items-center order-1 bg-wedding-primary shadow-xl w-8 h-8 rounded-full absolute left-4 md:static md:left-auto transform -translate-x-1/2 md:translate-x-0">
         <h1 className="mx-auto font-semibold text-lg text-white">{index + 1}</h1>
       </div>
       
-      <div className={`order-1 bg-white rounded-lg shadow-xl w-full md:w-5/12 px-6 py-6 transition-transform hover:scale-105 duration-300 ${isLeft ? 'animate-fade-in-right' : 'animate-fade-in-left'}`}>
-        <h3 className="mb-3 font-bold text-gray-800 text-xl font-serif">{event.eventName}</h3>
+      <div className={`order-1 bg-white rounded-lg shadow-xl w-full md:w-5/12 px-6 py-6 transition-transform hover:scale-105 duration-300 ml-12 md:ml-0 ${isLeft ? 'md:animate-fade-in-right' : 'md:animate-fade-in-left'}`}>
+        <h3 className="mb-3 font-bold text-gray-800 text-2xl md:text-3xl font-serif">{event.eventName}</h3>
         
         <div className="flex items-center text-gray-600 mb-2 text-sm">
           <Calendar className="w-4 h-4 mr-2 text-wedding-primary" />
@@ -49,10 +49,10 @@ const EventCard = ({ event, index }) => {
 };
 
 const SkeletonLoader = () => (
-  <div className="animate-pulse mb-8 flex justify-between items-center w-full">
+  <div className="animate-pulse mb-8 flex flex-col md:flex-row md:justify-between md:items-center w-full">
     <div className="hidden md:block w-5/12"></div>
-    <div className="z-20 bg-gray-300 w-8 h-8 rounded-full"></div>
-    <div className="bg-white rounded-lg shadow-xl w-full md:w-5/12 px-6 py-6">
+    <div className="z-20 bg-gray-300 w-8 h-8 rounded-full absolute left-4 md:static md:left-auto transform -translate-x-1/2 md:translate-x-0"></div>
+    <div className="bg-white rounded-lg shadow-xl w-full md:w-5/12 px-6 py-6 ml-12 md:ml-0">
       <div className="h-6 bg-gray-300 rounded w-3/4 mb-4"></div>
       <div className="h-4 bg-gray-200 rounded w-1/2 mb-2"></div>
       <div className="h-4 bg-gray-200 rounded w-1/2 mb-2"></div>
@@ -124,7 +124,7 @@ const Events = () => {
 
         <div className="relative wrap overflow-hidden p-4 md:p-10 h-full">
           {/* Vertical Timeline Line */}
-          <div className="border-2-2 absolute border-opacity-20 border-gray-700 h-full border left-8 md:left-1/2 top-0"></div>
+          <div className="border-2-2 absolute border-opacity-20 border-gray-700 h-full border left-4 md:left-1/2 top-0"></div>
 
           {loading ? (
             <>

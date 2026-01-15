@@ -47,3 +47,13 @@ services:
     image: redis:7-alpine
     expose:
       - "6379"
+
+  tunnel:
+    image: cloudflare/cloudflared:latest
+    container_name: wedding_tunnel
+    restart: unless-stopped
+    command: tunnel run wedding-tunnel
+    volumes:
+      - /Users/ajaydubey/.cloudflared:/etc/cloudflared
+    depends_on:
+      - frontend
