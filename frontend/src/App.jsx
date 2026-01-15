@@ -5,9 +5,7 @@ import Home from './components/Home';
 import Rsvp from './components/Rsvp';
 import Events from './components/Events';
 import AdminDashboard from './components/AdminDashboard';
-
-// Placeholder components for now
-const Story = () => <div className="pt-24 text-center text-2xl">Our Story</div>;
+import Story from './components/Story';
 
 function App() {
   return (

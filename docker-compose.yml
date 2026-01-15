@@ -33,8 +33,8 @@ services:
       POSTGRES_DB: sample-app-2
       POSTGRES_USER: ajay
       POSTGRES_PASSWORD: 66132480
-    ports:
-      - "5432:5432"
+    expose:
+      - "5432" # Only visible to other containers (like the Java app)
     volumes:
       - ./data/postgres:/var/lib/postgresql
     healthcheck:
@@ -45,5 +45,5 @@ services:
 
   redis:
     image: redis:7-alpine
-    ports:
-      - "6379:6379"
+    expose:
+      - "6379"

@@ -69,6 +69,7 @@ public class WeddingResource {
             }
         }
 
+        // This DAO method is already updated to sort by displayOrder ASC
         List<WeddingEventEntity> events = weddingEventDAO.findAll();
         try {
             String jsonEvents = objectMapper.writeValueAsString(events);

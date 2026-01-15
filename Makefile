@@ -12,7 +12,7 @@ rebuild-frontend:
 
 # Start the application stack (App, DB, Redis)
 run:
-	docker-compose up
+	docker-compose up -d
 
 # Stop the application stack
 down:
