@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.dropwizard.core.Configuration;
 import io.dropwizard.db.DataSourceFactory;
 import lombok.Getter;
+import lombok.Setter;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -26,5 +27,10 @@ public class SampleAppConfiguration extends Configuration {
     @Getter
     @JsonProperty("redisHost")
     private String redisHost;
+
+    @Getter
+    @Setter
+    @JsonProperty("adminSecret")
+    private String adminSecret;
 
 }

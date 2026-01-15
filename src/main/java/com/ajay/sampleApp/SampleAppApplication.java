@@ -1,7 +1,13 @@
 package com.ajay.sampleApp;
 
+import com.ajay.sampleApp.db.entities.GuestEntity;
 import com.ajay.sampleApp.db.entities.UserEntity;
+import com.ajay.sampleApp.db.entities.WeddingEventEntity;
+import com.ajay.sampleApp.resources.AdminResource;
 import com.ajay.sampleApp.resources.UserResource;
+import com.ajay.sampleApp.resources.WeddingResource;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import io.dropwizard.core.Application;
@@ -31,11 +37,11 @@ public class SampleAppApplication extends Application<SampleAppConfiguration> {
         return "SampleApp";
     }
 
-    public static final List<Class<?>> RESOURCE_CLASSES = Arrays.asList(UserResource.class);
+    public static final List<Class<?>> RESOURCE_CLASSES = Arrays.asList(UserResource.class, WeddingResource.class, AdminResource.class);
 
     // Create a Hibernate bundle for database access
     private final HibernateBundle<SampleAppConfiguration> hibernateBundle =
-            new HibernateBundle<SampleAppConfiguration>(UserEntity.class) {
+            new HibernateBundle<SampleAppConfiguration>(UserEntity.class, GuestEntity.class, WeddingEventEntity.class) {
                 @Override
                 public DataSourceFactory getDataSourceFactory(SampleAppConfiguration configuration) {
                     return configuration.getDataSourceFactory();
@@ -74,11 +80,15 @@ public class SampleAppApplication extends Application<SampleAppConfiguration> {
 
         // Configure CORS parameters
         cors.setInitParameter(CrossOriginFilter.ALLOWED_ORIGINS_PARAM, "http://localhost:3000,https://ajaywedsvandana.uk");
-        cors.setInitParameter(CrossOriginFilter.ALLOWED_HEADERS_PARAM, "X-Requested-With,Content-Type,Accept,Origin,Authorization");
+        cors.setInitParameter(CrossOriginFilter.ALLOWED_HEADERS_PARAM, "X-Requested-With,Content-Type,Accept,Origin,Authorization,X-Admin-Secret");
         cors.setInitParameter(CrossOriginFilter.ALLOWED_METHODS_PARAM, "OPTIONS,GET,PUT,POST,DELETE,HEAD");
 
         // Add URL mapping
         cors.addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), true, "/*");
+
+        // Configure ObjectMapper for Java 8 Date/Time types
+        environment.getObjectMapper().registerModule(new JavaTimeModule());
+        environment.getObjectMapper().disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 
         Injector injector = Guice.createInjector(new SampleAppModule(configuration, hibernateBundle));
         registerResources(environment, injector);

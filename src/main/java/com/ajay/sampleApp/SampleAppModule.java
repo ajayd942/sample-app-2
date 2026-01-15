@@ -1,8 +1,12 @@
 package com.ajay.sampleApp;
 
+import com.ajay.sampleApp.db.GuestDAO;
 import com.ajay.sampleApp.db.UserDao;
+import com.ajay.sampleApp.db.WeddingEventDAO;
 import com.ajay.sampleApp.redis.UserRedisService;
+import com.ajay.sampleApp.resources.AdminResource;
 import com.ajay.sampleApp.resources.UserResource;
+import com.ajay.sampleApp.resources.WeddingResource;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
@@ -35,6 +39,18 @@ public class SampleAppModule extends AbstractModule {
 
     @Provides
     @Singleton
+    private GuestDAO getGuestDAO(SessionFactory sessionFactory){
+        return new GuestDAO(sessionFactory);
+    }
+
+    @Provides
+    @Singleton
+    private WeddingEventDAO getWeddingEventDAO(SessionFactory sessionFactory){
+        return new WeddingEventDAO(sessionFactory);
+    }
+
+    @Provides
+    @Singleton
     private ObjectMapper getObjectMapper(){
         return new ObjectMapper();
     }
@@ -43,6 +59,18 @@ public class SampleAppModule extends AbstractModule {
     @Singleton
     private UserResource getUserResource(UserDao userDao, ObjectMapper mapper){
         return new UserResource(userDao, mapper);
+    }
+
+    @Provides
+    @Singleton
+    private WeddingResource getWeddingResource(GuestDAO guestDAO, WeddingEventDAO weddingEventDAO, Jedis jedis, ObjectMapper mapper){
+        return new WeddingResource(guestDAO, weddingEventDAO, jedis, mapper);
+    }
+
+    @Provides
+    @Singleton
+    private AdminResource getAdminResource(GuestDAO guestDAO, WeddingEventDAO weddingEventDAO, SampleAppConfiguration configuration, Jedis jedis){
+        return new AdminResource(guestDAO, weddingEventDAO, configuration, jedis);
     }
 
     @Provides

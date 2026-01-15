@@ -22,3 +22,5 @@ database:
   url: jdbc:postgresql://${DB_HOST:-localhost}:${DB_PORT:-5432}/sample-app-2
 
 redisHost: redis://${REDIS_HOST:-127.0.0.1}:${REDIS_PORT:-6379}
+
+adminSecret: 'my-secure-wedding-password-123'

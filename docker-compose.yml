@@ -20,6 +20,13 @@ services:
       - REDIS_PORT=6379
     command: ["sh", "-c", "java -jar app.jar db migrate config.yml && java -jar app.jar server config.yml"]
 
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - app
+
   db:
     image: postgres:18
     environment:
