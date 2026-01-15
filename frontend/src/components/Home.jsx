@@ -54,7 +54,7 @@ const Home = () => {
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{ 
-          backgroundImage: "url('https://images.unsplash.com/photo-1519741497674-611481863552?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80')",
+          backgroundImage: "url('/moments/background_final.jpeg')",
         }}
       >
         <div className="absolute inset-0 bg-black/40"></div>
@@ -62,13 +62,13 @@ const Home = () => {
 
       {/* Hero Content */}
       <div className="relative z-10 h-full flex flex-col justify-center items-center text-center text-white px-4">
-        <p className="text-sm md:text-lg uppercase tracking-[0.3em] mb-4 animate-fade-in-down">
+        <p className="text-sm md:text-lg uppercase tracking-[0.3em] mb-4 animate-fade-in-down font-sans">
           We are getting married
         </p>
-        <h1 className="text-5xl md:text-8xl font-serif font-bold mb-6 animate-fade-in">
-          Ajay & Vandana
+        <h1 className="text-6xl md:text-9xl font-script font-bold mb-6 animate-fade-in">
+          Vandana & Ajay
         </h1>
-        <p className="text-xl md:text-2xl font-light italic mb-8 animate-fade-in-up">
+        <p className="text-xl md:text-2xl font-light italic mb-8 animate-fade-in-up font-serif">
           March 11, 2026
         </p>
         

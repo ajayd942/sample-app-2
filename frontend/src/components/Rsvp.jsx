@@ -70,7 +70,7 @@ const Rsvp = () => {
       <div className="bg-white p-8 md:p-12 rounded-2xl shadow-xl max-w-2xl w-full animate-fade-in">
         <div className="text-center mb-10">
           <h2 className="text-3xl md:text-4xl font-serif font-bold text-gray-800 mb-3">RSVP</h2>
-          <p className="text-gray-500">Please respond by January 1st, 2026</p>
+          <p className="text-gray-500">Please respond by February 15th, 2026</p>
         </div>
 
         {error && (

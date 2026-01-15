@@ -13,7 +13,9 @@ export default {
         },
       },
       fontFamily: {
-        serif: ['Playfair Display', 'serif'], // Sophisticated serif for headings
+        sans: ['Lato', 'sans-serif'],
+        serif: ['Playfair Display', 'serif'],
+        script: ['Great Vibes', 'cursive'], // Custom class for signatures
       },
     },
   },
