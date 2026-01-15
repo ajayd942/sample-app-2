@@ -11,7 +11,6 @@ database:
   user: ${DB_USER:-ajay}
 
   # the password
-  password: ${DB_PASSWORD:-66132480}
 
   properties:
     charSet: UTF-8
@@ -23,4 +22,3 @@ database:
 
 redisHost: redis://${REDIS_HOST:-127.0.0.1}:${REDIS_PORT:-6379}
 
-adminSecret: '66132480'
