@@ -1,0 +1,17 @@
+.classpath
+.project
+.settings/
+target/
+/data/
+
+# IDE
+.idea/
+
+# Local config with secrets - use config.yml.template instead
+config.yml
+
+# Build artifacts
+*.tar.gz
+*.tar
+sample-app-images*
+.DS_Store

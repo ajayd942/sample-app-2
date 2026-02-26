@@ -1,0 +1,60 @@
+version: '3.8'
+
+services:
+  app:
+    image: sample-app-2-app:latest
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    environment:
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_USER=ajay
+      - DB_PASSWORD=66132480
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    command: [ "sh", "-c", "java -jar app.jar db migrate config.yml && java -jar app.jar server config.yml" ]
+
+  frontend:
+    container_name: frontend
+    image: sample-app-2-frontend:latest
+    ports:
+      - "3000:80"
+    depends_on:
+      - app
+
+  db:
+    image: postgres:18
+    environment:
+      POSTGRES_DB: sample-app-2
+      POSTGRES_USER: ajay
+      POSTGRES_PASSWORD: 66132480
+    expose:
+      - "5432" # Only visible to other containers (like the Java app)
+    volumes:
+      - ./data/postgres:/var/lib/postgresql
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ajay -d sample-app-2" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    expose:
+      - "6379"
+
+  tunnel:
+    image: cloudflare/cloudflared:latest
+    container_name: wedding_tunnel
+    restart: unless-stopped
+    command: tunnel run wedding-tunnel
+    volumes:
+      - ${HOME}/.cloudflared:/etc/cloudflared
+    depends_on:
+      - frontend

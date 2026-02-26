@@ -1,0 +1,67 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="1" author="ajaydube">
+        <createTable tableName="users">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="full_name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="dob" type="date"/>
+            <column name="phone" type="varchar(32)"/>
+            <column name="additional_info" type="jsonb"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2" author="ajaydube">
+        <createTable tableName="guests">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="full_name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="phone_number" type="varchar(32)"/>
+            <column name="email" type="varchar(255)"/>
+            <column name="rsvp_status" type="varchar(32)" defaultValue="PENDING"/>
+            <column name="needs_cab" type="boolean" defaultValueBoolean="false"/>
+            <column name="arrival_time" type="timestamp"/>
+            <column name="departure_time" type="timestamp"/>
+            <column name="guest_count" type="int" defaultValueNumeric="1"/>
+        </createTable>
+
+        <createTable tableName="wedding_events">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="event_name" type="varchar(255)"/>
+            <column name="location" type="varchar(255)"/>
+            <column name="start_time" type="timestamp"/>
+            <column name="description" type="text"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="3" author="ajaydube">
+        <addColumn tableName="guests">
+            <column name="created_at" type="timestamp" defaultValueComputed="NOW()"/>
+            <column name="updated_at" type="timestamp"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="4" author="ajaydube">
+        <addColumn tableName="wedding_events">
+            <column name="map_url" type="varchar(500)"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="5" author="ajaydube">
+        <addColumn tableName="wedding_events">
+            <column name="display_order" type="int" defaultValueNumeric="0"/>
+        </addColumn>
+    </changeSet>
+</databaseChangeLog>
